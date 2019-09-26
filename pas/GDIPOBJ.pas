@@ -1128,10 +1128,18 @@ type
     // DrawString
     function DrawString(string_: WideString; length: Integer; font: TGPFont;
       const layoutRect: TGPRectF; stringFormat: TGPStringFormat; brush: TGPBrush): TStatus; overload;
+    function DrawString(string_: WideString; font: TGPFont;
+      const layoutRect: TGPRectF; stringFormat: TGPStringFormat; brush: TGPBrush): TStatus; overload;
     function DrawString(string_: WideString; length: Integer; font: TGPFont;
+      const origin: TGPPointF; brush: TGPBrush): TStatus; overload;
+    function DrawString(string_: WideString; font: TGPFont;
       const origin: TGPPointF; brush: TGPBrush): TStatus; overload;
     function DrawString(string_: WideString; length: Integer; font: TGPFont;
       const origin: TGPPointF; stringFormat: TGPStringFormat; brush: TGPBrush): TStatus; overload;
+    function DrawString(string_: WideString; font: TGPFont;
+      const origin: TGPPointF; stringFormat: TGPStringFormat; brush: TGPBrush): TStatus; overload;
+    function DrawString(string_: WideString; font: TGPFont;
+           X: Single; Y: Single; brush: TGPBrush): TStatus; overload;
 
     // MeasureString
     function MeasureString(string_: WideString; length: Integer; font: TGPFont;
@@ -5270,6 +5278,12 @@ implementation
         nbrush));
   end;
 
+  function TGPGraphics.DrawString( string_: WideString; font: TGPFont;
+     const layoutRect: TGPRectF; stringFormat: TGPStringFormat; brush: TGPBrush): TStatus;
+  begin
+  	Result := DrawString(string_, Length(string_), font, layoutRect, stringFormat, brush);
+  end;
+
   function TGPGraphics.DrawString(string_: WideString; length: Integer; font: TGPFont;
            const origin: TGPPointF; brush: TGPBrush): TStatus;
   var
@@ -5291,6 +5305,12 @@ implementation
         @rect,
         nil,
         nbrush));
+  end;
+
+  function TGPGraphics.DrawString(string_: WideString; font: TGPFont;
+           const origin: TGPPointF; brush: TGPBrush): TStatus;
+  begin
+  	Result := DrawString(string_, Length(string_), font, origin, brush);
   end;
 
   function TGPGraphics.DrawString(string_: WideString; length: Integer; font: TGPFont;
@@ -5318,6 +5338,21 @@ implementation
         nbrush));
   end;
 
+  function TGPGraphics.DrawString(string_: WideString; font: TGPFont;
+      const origin: TGPPointF; stringFormat: TGPStringFormat; brush: TGPBrush): TStatus;
+  begin
+  	DrawString(string_, Length(string_), font, origin, stringFormat, brush);
+  end;
+
+  function TGPGraphics.DrawString(string_: WideString; font: TGPFont;
+           X: Single; Y: Single; brush: TGPBrush): TStatus;
+  var
+    origin: TGPPointF;
+  begin
+    origin.X := X;
+    origin.Y := Y;
+    Result := DrawString(string_, font, origin, brush);
+  end;
 
   function TGPGraphics.MeasureString(string_: WideString; length: Integer; font: TGPFont;
        const layoutRect: TGPRectF; stringFormat: TGPStringFormat; out boundingBox: TGPRectF;
